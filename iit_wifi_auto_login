@@ -1,0 +1,47 @@
+#!/usr/bin/expect -f
+
+set force_conservative 0  ;# set to 1 to force conservative mode even if
+			  ;# script wasn't run conservatively originally
+if {$force_conservative} {
+	set send_slow {1 .1}
+	proc send {ignore arg} {
+		sleep .1
+		exp_send -s -- $arg
+	}
+}
+
+set timeout -1
+
+# Spawns an instance of the w3m teminal web browser process.
+spawn w3m stgw.iitmandi.ac.in/ug/login.php
+
+# Wait for 5 seconds in case of slow link speed
+sleep 5
+
+# Navigation keystrokes
+send -- "	"
+send -- "	"
+send -- "	"
+send -- "	"
+send -- "	"
+send -- "\r"
+
+# Type your username in place of "USERNAME"
+send -- "USERNAME\r"
+
+# Navigation keystrokes
+send -- "	"
+send -- "\r"
+
+# Type your password in place of "PASSWORD"
+send -- "PASSWORD\r"
+
+# Navigation keystrokes
+send -- "	"
+send -- "\r"
+
+# Passes control to w3m browser
+interact
+
+# Clears the terminal screen
+system "clear"
